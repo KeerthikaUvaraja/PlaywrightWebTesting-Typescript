@@ -1,16 +1,24 @@
 const {test, expect} = require('@playwright/test');
 import { loginPage } from "../Pages/login.page";
+import { shoppingPage } from "../Pages/shopping.page";
+import dotenv from "dotenv";
 
-test("Test playwright", async ({page}) =>{
+test("Validation error check ", async ({page}) =>{
+    console.log("Verify validation errors are thrown in login page");
     const loginPagee = new loginPage(page, expect);
-    await page.goto("https://rahulshettyacademy.com/loginpagePractise/");
+    const shopPage = new shoppingPage(page, expect);
+    await page.goto(process.env.URL);
+    await loginPagee.validationErrorsLoginPage();
+
+})
+
+test("Login successful check", async ({page}) =>{
+    console.log("Verify login was successful");
+    const loginPagee = new loginPage(page, expect);
+    const shopPage = new shoppingPage(page, expect);
+    //console.log(process.env.URL);
+    await page.goto(process.env.URL);
     await loginPagee.verifyLoginPage();
+    await shopPage.findFirstProduct();
 })
 
-test("Test playwright2 ", async ({page}) =>{
- 
-    await page.goto("https://google.com");
-    await page.title();
-    await expect(page).toHaveTitle("Google");
-
-})
